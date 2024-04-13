@@ -7,6 +7,7 @@ import { config } from '@tamagui/config/v3'
 import HomeScreen from './screens/home';
 import Test from './screens/test';
 import Admin from './screens/admin';
+import AnotherTest from './screens/anotherTest';
 
 const tamaguiConfig = createTamagui(config)
 
@@ -20,6 +21,7 @@ export type RootStackParamList = {
   Home: undefined;
   Test: undefined;
   Admin: undefined;
+  AnotherTest: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -31,6 +33,7 @@ export default function App() {
           <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen name="Test" component={Test} />
           <Stack.Screen name="Admin" component={Admin} />
+          <Stack.Screen name="AnotherTest" component={AnotherTest} />
         </Stack.Navigator>
       </NavigationContainer>
     </TamaguiProvider>

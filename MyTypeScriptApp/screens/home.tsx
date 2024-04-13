@@ -16,7 +16,8 @@ const Home: React.FC<HomeProps> = ({navigation}) => {
     <>
       <Text>No</Text>
       <View style={styles.container}>
-          <Button style={styles.classicButton} onPress={() => navigation.navigate("Test")}>Press my mom</Button>
+          <Button style={styles.classicButton} onPress={() => navigation.navigate("Test")}>Goes to Test</Button>
+          <Button style={styles.classicButton} onPress={() => navigation.navigate("AnotherTest")}>Goes to Another test</Button>
       </View>
       
     </>
