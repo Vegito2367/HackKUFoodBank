@@ -1,42 +1,82 @@
 
-import { Pressable, Text, View,StyleSheet, TextInput, Button, Image } from 'react-native';
-import React, { useRef } from 'react';
+import { Pressable, Text, View,StyleSheet, TextInput, Button, Image, ScrollView } from 'react-native';
+import React from 'react';
 import ItemHolder from './itemHolder';
+
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    display: "flex",
     backgroundColor: '#fff',
     alignItems: 'center',
+    justifyContent: 'center',
+    margin: 5,
+    paddingBottom: 50,
   },
 });
 
 const testImages=[
   {
     name: "Apple",
-    image:"../public/tejPic.jpg",
+    image:require("../public/tejPic.jpg"),
+    availableCount: 5,
+    reservedCount: 2
+  },
+  {
+    name: "Apple",
+    image:require("../public/tejPic.jpg"),
     availableCount: 5,
     reservedCount: 2
   },
   {
     name: "Milk",
-    image:"../public/tejPic.jpg",
+    image:require("../public/tejPic.jpg"),
     availableCount: 3,
     reservedCount: 1
   },
   {
     name: "Beans",
-    image:"../public/tejPic.jpg",
+    image:require("../public/tejPic.jpg"),
     availableCount: 9,
     reservedCount: 4
   },
   {
     name: "Chips",
-    image:"../public/tejPic.jpg",
+    image:require("../public/tejPic.jpg"),
     availableCount: 10,
     reservedCount: 0
-  }
-
+  },
+  {
+    name: "Apple",
+    image:require("../public/tejPic.jpg"),
+    availableCount: 5,
+    reservedCount: 2
+  },
+  {
+    name: "Apple",
+    image:require("../public/tejPic.jpg"),
+    availableCount: 5,
+    reservedCount: 2
+  },
+  {
+    name: "Milk",
+    image:require("../public/tejPic.jpg"),
+    availableCount: 3,
+    reservedCount: 1
+  },
+  {
+    name: "Beans",
+    image:require("../public/tejPic.jpg"),
+    availableCount: 9,
+    reservedCount: 4
+  },
+  {
+    name: "Chips",
+    image:require("../public/tejPic.jpg"),
+    availableCount: 10,
+    reservedCount: 0
+  },
+  
 ]
 
 export function HomeScreen({ navigation })
@@ -48,18 +88,14 @@ export function HomeScreen({ navigation })
     navigation.navigate('Profile', {name: text});
   }
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
+      <View style={{display:"flex", flexDirection:"row", flexWrap:"wrap"}}>
       {testImages.map((item, index) => (
         <ItemHolder name={item.name} image={item.image} reservedCount={item.reservedCount} availableCount={item.availableCount} />
       ))}
-      <Pressable onPress={goToProfile}><Text>Submit</Text></Pressable>
-      <TextInput
-      style={{height: 40, borderColor: 'gray', borderWidth: 1, width: 200, margin: 10}}
-      editable={true}
-      numberOfLines={1}
-      onChangeText={text => setText(text)}
-      />
-    </View>
+      </View>
+      
+    </ScrollView>
   );
 }
 

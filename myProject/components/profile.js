@@ -5,8 +5,8 @@ function Profile({navigation, route})
 {
   const name = route.params?.name || "Tej";
   function goHome(){
-    console.log("Go Home");
-    navigation.navigate('Home');
+
+    navigation.navigate('Main Menu');
   }
   return (
     <View style={styles.container}>

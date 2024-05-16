@@ -1,25 +1,50 @@
-import { Pressable, Text, View,StyleSheet, TextInput, Button, Image } from 'react-native';
-export default function ItemHolder({name, image, availableCount, reservedCount})
+import { Pressable, Text, View,StyleSheet, TextInput, Button, Image, TouchableOpacity } from 'react-native';
+import { useState } from 'react';
+export default function ItemHolder(route)
 {
+  const [pressed, setPressed] = useState(false);
+  
   return(
-    <View style={imagestyles.container}>
-      <Image style={imagestyles.image} source={{uri: route.params.image}}/>
-      <Text>{route.params.name}</Text>
-      <Text>{route.params.availableCount}</Text>
-      <Text>{route.params.reservedCount}</Text>
-    </View>
+    <Pressable style={({ pressed }) => [
+    {opacity: pressed ? 0.8 : 1},
+    {backgroundColor: pressed ? '#f0f0f0' : '#fff'},
+    {borderRadius: pressed? 15 : 5}
+    ,imagestyles.container]}>
+      <Text>{pressed}</Text>
+      <Image style={imagestyles.image} source={route.image}/>
+      <Text>{route.name}</Text>
+      <Text>{route.availableCount}</Text>
+      <Text>{route.reservedCount}</Text>
+    </Pressable>
   );
 }
 
 const imagestyles = StyleSheet.create({
   image:{
-    width: 200,
-    height: 200,
+    width:100,
+    height:100,
+    padding:0,
+    margin:0,
   },
   container: {
-    flex: 1,
+    flexGrow:0,
+    flexShrink:0,
+    flexBasis: '33%',
+    flexWrap: 'wrap',
     backgroundColor: '#fff',
     alignItems: 'center',
+    justifyContent: 'center',
+    padding:0,
+    margin: 3,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    transition: "2s",
   },
 
 });
