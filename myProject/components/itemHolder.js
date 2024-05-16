@@ -1,11 +1,11 @@
-import { Pressable, Text, View,StyleSheet, TextInput, Button, Image, TouchableOpacity } from 'react-native';
+import { Pressable, Text, View,StyleSheet, TextInput, Button, Image, Modal } from 'react-native';
 import { useState } from 'react';
 export default function ItemHolder(route)
 {
   const [pressed, setPressed] = useState(false);
   
   return(
-    <Pressable style={({ pressed }) => [
+    <Pressable onPress={() => {route.onClickFunction(route)}} style={({ pressed }) => [
     {opacity: pressed ? 0.8 : 1},
     {backgroundColor: pressed ? '#f0f0f0' : '#fff'},
     {borderRadius: pressed? 15 : 5}
