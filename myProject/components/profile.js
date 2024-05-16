@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Pressable, Button } from 'react-native';
 
 function Profile({navigation, route})
 {
-  const name=route.params.name
+  const name = route.params?.name || "Tej";
   function goHome(){
     console.log("Go Home");
     navigation.navigate('Home');

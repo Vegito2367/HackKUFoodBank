@@ -7,7 +7,7 @@ export function ShoppingCart({navigation})
     <View style={styles.container}>
       <Text style={styles.title}>Shopping Cart</Text>
       <Text>Insert Shopping Cart content here</Text>
-      <Pressable onPress={() => navigation.navigate('Profile')}><Text>Hello</Text></Pressable>
+      <Pressable onPress={() => navigation.navigate('Home')}><Text>Hello</Text></Pressable>
     </View>
   );
 }
