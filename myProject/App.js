@@ -4,7 +4,7 @@ import Profile from './components/profile';
 import React from 'react';
 import { HomeScreen } from './components/Home';
 import { ShoppingCart } from './components/shoppingCart';
-import { enableScreens } from 'react-native-screens';
+import { LoginPage } from './components/loginPage';
 
 
 const Tab = createBottomTabNavigator();
@@ -15,8 +15,8 @@ export default function App() {
   return (
     <NavigationContainer>
       <Tab.Navigator>
-        <Tab.Screen name="Main Menu" component={HomeScreen}/>
         <Tab.Screen name="Profile" component={Profile}/>
+        <Tab.Screen name="Main Menu" component={HomeScreen}/>
         <Tab.Screen name="ShoppingCart" component={ShoppingCart}/>
       </Tab.Navigator>
     </NavigationContainer>

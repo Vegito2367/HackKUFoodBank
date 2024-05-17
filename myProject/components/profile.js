@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Pressable, Button } from 'react-native';
+import { View, Text, StyleSheet, Pressable, Button, Image, TextInput } from 'react-native';
 
 function Profile({navigation, route})
 {
@@ -10,10 +10,12 @@ function Profile({navigation, route})
   }
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Profile</Text>
-      <Text>Insert Profile content {name}</Text>
-      <Pressable onPress={() => navigation.navigate('ShoppingCart')}><Text>Hello</Text></Pressable>
-      <Button title="Go to Home" onPress={goHome}/>
+      <View style={{display:"flex", alignContent:"center", borderWidth:2, padding:20, paddingBottom:75}}>
+      <Text style={styles.title}>Login Page</Text>
+      <TextInput numberOfLines={1} placeholder="Username" style={{borderWidth: 1, height: 40, marginBottom: 20}}/>
+      <TextInput numberOfLines={1} placeholder="Password" style={{borderWidth: 1, height: 40, marginBottom: 50}}/>
+      <Pressable style={styles.button} onPress={goHome}><Text style={{fontSize:20, textAlign:"center"}} >Log in</Text></Pressable>
+      </View>
     </View>
   );
 };
@@ -23,12 +25,18 @@ export default Profile;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
+    marginTop: 70,
   },
   title: {
-    fontSize: 24,
+    fontSize: 50,
     fontWeight: 'bold',
     marginBottom: 16,
+  },
+  button: {
+    backgroundColor: "#f000ff",
+    padding: 20,
+    borderRadius: 5,
+    
   },
 });

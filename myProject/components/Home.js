@@ -174,6 +174,7 @@ export function HomeScreen({ navigation })
               <Button title="-" onPress={SubtractNumber} style={{backgroundColor:"rgba(99, 111, 130,1)"}}></Button>
               </View>
               <Button title="Done" onPress={handleModalClose}/>
+              <Button title='Close' onPress={closeModal} color='red'>Close</Button>
             </View>  
           </View>
         </View>
