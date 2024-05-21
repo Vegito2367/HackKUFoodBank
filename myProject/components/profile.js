@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, Pressable, Button, Image, TextInput } from 'react-native';
+import supabase from './supabaseClient';
 
 function Profile({navigation, route})
 {

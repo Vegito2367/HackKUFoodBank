@@ -1,8 +1,9 @@
 
 import { Pressable, Text, View,StyleSheet, TextInput, Button, Image, ScrollView, Modal } from 'react-native';
-import React from 'react';
-import { useState } from 'react';
+import React, { useEffect } from 'react';
 import ItemHolder from './itemHolder';
+import { useState } from 'react';
+import supabase from './supabaseClient';
 
 
 const styles = StyleSheet.create({
@@ -113,12 +114,39 @@ const testImages=[
 export function HomeScreen({ navigation })
 {
 
-  
+  const [error,setError] = useState(null);
+  const [food,setFood] = useState(null);
   const [text, setText] = React.useState('');
 
   const [modalVisibility, setModalVisibility] = useState(false);
   const [modalData, setModalData] = useState(null);
   const [userCount, setUserCount] = useState(0);
+
+  useEffect(() => {
+    async function fetchData(){
+      const {data, error} = await supabase
+      .from('FoodItems')
+      .select()
+
+      if(error){
+        console.log("Error Found")
+        setError('Error fetching data');
+        console.log(error)
+        setFood(null)
+
+      }
+      if(data){
+        console.log("Data Found")
+        setFood(data);
+        console.log(data);
+        setError(null);
+      }
+    }
+
+    fetchData();
+  }, [])
+
+
   function handlePress(param){
     console.log(param)
     setModalData(param);
@@ -158,7 +186,7 @@ export function HomeScreen({ navigation })
   }
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Modal visible={modalVisibility} animationType="slide" transparent={true}>
+      {/* <Modal visible={modalVisibility} animationType="slide" transparent={true}>
         <View style={{width:"100%", height:"100%", backgroundColor:"rgba(99, 111, 130,0.7)"
         }}>
           <View style={styles.centeredView}>
@@ -183,7 +211,17 @@ export function HomeScreen({ navigation })
       {testImages.map((item, index) => (
         <ItemHolder name={item.name} image={item.image} reservedCount={item.reservedCount} availableCount={item.availableCount} onClickFunction={handlePress} key={index} id={item.id} />
       ))}
-      </View>
+      </View> */}
+
+      {food && (
+        <View>
+          {food.map((item, index) => (
+            <p>{item.name} {item.availableCount}</p>
+          ))}
+        </View>
+      )}
+
+      {error && (<p>{error}</p>)}
 
 
     </ScrollView>

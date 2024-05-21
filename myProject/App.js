@@ -4,7 +4,6 @@ import Profile from './components/profile';
 import React from 'react';
 import { HomeScreen } from './components/Home';
 import { ShoppingCart } from './components/shoppingCart';
-import { LoginPage } from './components/loginPage';
 
 
 const Tab = createBottomTabNavigator();
