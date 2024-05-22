@@ -1,5 +1,5 @@
 
-import { Pressable, Text, View,StyleSheet, TextInput, Button, Image, ScrollView, Modal } from 'react-native';
+import { Pressable, Text, View,StyleSheet, TextInput, Button, Image, ScrollView, Modal, FlatList, RefreshControl } from 'react-native';
 import React, { useEffect } from 'react';
 import ItemHolder from './itemHolder';
 import { useState } from 'react';
@@ -45,70 +45,6 @@ const testImages=[
     availableCount: 5,
     reservedCount: 2
   },
-  {
-    id: 2,
-    name: "Apple",
-    image:require("../public/tejPic.jpg"),
-    availableCount: 5,
-    reservedCount: 2
-  },
-  {
-    id: 3,
-    name: "Milk",
-    image:require("../public/tejPic.jpg"),
-    availableCount: 3,
-    reservedCount: 1
-  },
-  {
-    id: 4,
-    name: "Beans",
-    image:require("../public/tejPic.jpg"),
-    availableCount: 9,
-    reservedCount: 4
-  },
-  {
-    id: 5,
-    name: "Chips",
-    image:require("../public/tejPic.jpg"),
-    availableCount: 10,
-    reservedCount: 0
-  },
-  {
-    id: 6,
-    name: "Apple",
-    image:require("../public/tejPic.jpg"),
-    availableCount: 5,
-    reservedCount: 2
-  },
-  {
-    id: 7,
-    name: "Apple",
-    image:require("../public/tejPic.jpg"),
-    availableCount: 5,
-    reservedCount: 2
-  },
-  {
-    id: 8,
-    name: "Milk",
-    image:require("../public/tejPic.jpg"),
-    availableCount: 3,
-    reservedCount: 1
-  },
-  {
-    id: 9,
-    name: "Beans",
-    image:require("../public/tejPic.jpg"),
-    availableCount: 9,
-    reservedCount: 4
-  },
-  {
-    id: 10,
-    name: "Chips",
-    image:require("../public/tejPic.jpg"),
-    availableCount: 10,
-    reservedCount: 0
-  },
-  
 ]
 
 export function HomeScreen({ navigation })
@@ -117,12 +53,18 @@ export function HomeScreen({ navigation })
   const [error,setError] = useState(null);
   const [food,setFood] = useState(null);
   const [text, setText] = React.useState('');
-
+  const [createModalVisibility, setCreateModalVisibility] = useState(false);
+  const [creatFormData, setCreateFormData] = useState({
+    name:"",
+    availableCount:0,
+  })
   const [modalVisibility, setModalVisibility] = useState(false);
   const [modalData, setModalData] = useState(null);
   const [userCount, setUserCount] = useState(0);
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
+    console.log("Fetching Data")
     async function fetchData(){
       const {data, error} = await supabase
       .from('FoodItems')
@@ -144,11 +86,47 @@ export function HomeScreen({ navigation })
     }
 
     fetchData();
-  }, [])
+  },[])
 
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    fetchDataFromDataBase();
+    setRefreshing(false);
+  }, []);
+
+  function fetchDataFromDataBase(){
+    console.log("Fetching Data on Scoll")
+
+    async function fetchData(){
+      const {data, error} = await supabase
+      .from('FoodItems')
+      .select()
+
+      if(error){
+        console.log("Error Found")
+        setError('Error fetching data');
+        console.log(error)
+        setFood(null)
+
+      }
+      if(data){
+        console.log("Data Found")
+        setFood(data);
+        console.log(data);
+        setError(null);
+      }
+    }
+  }
+
+  function FoodItemFormUpdate(fieldName, value){
+    setCreateFormData({
+      ...creatFormData,
+      [fieldName]: value
+    })
+
+  }
 
   function handlePress(param){
-    console.log(param)
     setModalData(param);
     setModalVisibility(true);
   }
@@ -184,9 +162,44 @@ export function HomeScreen({ navigation })
     }
     closeModal();
   }
+
+  function addFoodItem(){
+    addFoodItemToDataBase();
+    setCreateModalVisibility(false);
+  }
+
+  async function addFoodItemToDataBase(){
+    const {data, error} = await supabase
+    .from('FoodItems')
+    .insert([
+      {name:creatFormData.name, availableCount:creatFormData.availableCount}
+    ])
+    if(error){
+      console.log("Error Found")
+      setError('Error fetching data');
+      console.log(error)
+
+    }
+  }
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      {/* <Modal visible={modalVisibility} animationType="slide" transparent={true}>
+    <ScrollView refreshControl={
+      <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+    } contentContainerStyle={styles.container}>
+      <Button title="Add Item Type" onPress={()=>{setCreateModalVisibility(true)}}/>
+      <Modal visible={createModalVisibility} animationType="slide" transparent={true}>
+      <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Text>Name of the Item: </Text>
+              <TextInput placeholder="Name" numberOfLines={1} style={{borderWidth: 1, height: 40, width:200, marginBottom: 20}} onChangeText={(text)=>{FoodItemFormUpdate("name",text)}}/>
+
+              <Text>How many units? </Text>
+              <TextInput placeholder="Name" numberOfLines={1} style={{borderWidth: 1, height: 40, width:200, marginBottom: 20}} onChangeText={(text)=>{FoodItemFormUpdate("availableCount",Number(text))}}/>
+
+              <Button title="Done" onPress={addFoodItem}/>
+            </View>
+      </View>
+      </Modal>
+      <Modal visible={modalVisibility} animationType="slide" transparent={true}>
         <View style={{width:"100%", height:"100%", backgroundColor:"rgba(99, 111, 130,0.7)"
         }}>
           <View style={styles.centeredView}>
@@ -208,22 +221,10 @@ export function HomeScreen({ navigation })
         </View>
       </Modal>
       <View style={{display:"flex", flexDirection:"row", flexWrap:"wrap"}}>
-      {testImages.map((item, index) => (
-        <ItemHolder name={item.name} image={item.image} reservedCount={item.reservedCount} availableCount={item.availableCount} onClickFunction={handlePress} key={index} id={item.id} />
+      {food && food.map((item, index) => (
+        <ItemHolder name={item.name} image={testImages[0].image} reservedCount={item.reservedCount} availableCount={item.availableCount} onClickFunction={handlePress} key={index} id={item.id} />
       ))}
-      </View> */}
-
-      {food && (
-        <View>
-          {food.map((item, index) => (
-            <p>{item.name} {item.availableCount}</p>
-          ))}
-        </View>
-      )}
-
-      {error && (<p>{error}</p>)}
-
-
+      </View>
     </ScrollView>
   );
 }
